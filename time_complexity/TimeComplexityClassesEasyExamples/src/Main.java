@@ -146,22 +146,26 @@ public class Main {
         // ========================
 
         // e.g. 3D arrays (e.g. multiple datasets or multiple results):
+        //int[][] array2D = {{2,4,6},{2,5,6},{5,4,6}};
         int[][][] array3D = {
                 {
-                    {4,5,7},
-                    {2,6,3},
-                    {8,4,3}
-                },
+                    {4,5,7}, // j
+                    //k k k
+                    {2,6,3}, // j
+                    //k k k
+                    {8,4,3} // j
+                    // k k k
+                }, // i
                 {
                     {2,2,1},
                     {2,6,3},
                     {6,2,1}
-                },
+                }, // i
                 {
                     {8,6,2},
                     {2,1,4},
                     {6,7,3}
-                }
+                } // i
         };
 
         System.out.println("Measuring time of the execution....");
@@ -190,11 +194,12 @@ public class Main {
 
         // O(2^n)
         // String password = "password123";
+
         System.out.println("Measuring time of the execution....");
         timeBefore = System.currentTimeMillis();
         timeBeforeNanoSec = System.nanoTime();
 
-        String password = "gethaz"; // Assuming we do not know the length of the password beforehand...
+        String password = "gefhez"; // Assuming we do not know the length of the password beforehand...
         StringBuilder substringGuess = new StringBuilder("");
         boolean passwordAlreadyFound = false;
         String correctPasswordGuess = "";
@@ -208,6 +213,7 @@ public class Main {
             String jCharStr = "" + j_char;
             guessesDatabase.add(jCharStr);
         }
+
         do {
             Set<String> missingItems = new HashSet<>();
             for(String guess : guessesDatabase) {
@@ -240,7 +246,6 @@ public class Main {
             System.out.println("Guesses database size: " + guessesDatabase.size());
         } while(!passwordAlreadyFound);
 
-        /*
         for(char j_char = 'a'; j_char <= 'z'; j_char++) {
 
             String jCharStr = "" + j_char;
@@ -307,7 +312,6 @@ public class Main {
             }
         } while(!passwordAlreadyFound);
 
-         */
 
         /*
         do {
@@ -519,6 +523,7 @@ public class Main {
         } while (!passwordAlreadyFound);
 
          */
+
 
         System.out.println("Hacked password is:" + correctPasswordGuess);
 
