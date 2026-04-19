@@ -1,4 +1,7 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class Tree {
 
@@ -33,12 +36,10 @@ public class Tree {
             );
         }
     }
-
     public void runTreeTraversal(int searchStart, int searchedItem) {
         init();
         System.out.println(traverseAndComputeDistance(searchStart, searchedItem)
                 - 1 // because I want the path, not the node
         );
     }
-
 }

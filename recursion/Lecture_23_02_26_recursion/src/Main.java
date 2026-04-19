@@ -1,10 +1,10 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
+
+    private Map<Integer, Long> dictionaryMemory = new HashMap<>();
 
     public static int factorial(int n) {
         if (n == 0) { // BASE CASE / HALT CASE
@@ -57,12 +57,33 @@ public class Main {
         }
     }
 
+    public long fibonacciWithHashMap(int n) {
+        // 1. BASE CASE
+        if (n <= 1) {
+            return n;
+        }
+
+        // 2. MEMORY: Have we already calculated this?
+        // If yes, instantly return the saved: O(1)
+        if (dictionaryMemory.containsKey(n)) {
+            return dictionaryMemory.get(n);
+        }
+
+        // 3. RECURSIVE STEP: We haven't seen it yet. Calculate like always recursively...
+        long result = fibonacciWithHashMap(n - 1)
+                + fibonacciWithHashMap(n - 2);
+
+        // 4. SAVE for the next time...
+        dictionaryMemory.put(n, result);
+
+        return result;
+    }
+
     public static int fibonacciByLoop(int n) {
         int resultNew = 0;
         int i = 0; // F_(old-1) or F(n-2)
         //int iPlus1 = i + 1; // F_old or F(n-1)
         //int iPlus2 = i + 2; // F_new or F(n)
-        resultNew = 0;
         int resultOld = 0;
         int resultOldMinus1 = 0;
 
@@ -107,6 +128,7 @@ public class Main {
     }
 
     public static boolean haltingFunction(int n) {
+        // Examples of different ways halting can be done in function or method
         for (int i = 0; i < n; i++) {
             while(true) {
                 System.out.println("Never stop!");
@@ -120,6 +142,7 @@ public class Main {
     }
 
     public static boolean haltingFunction2(int n) {
+        // Examples of different ways halting can be done in function or method
         for (int i = 0; i < n; i++) {
             haltingFunction2(n);
             System.out.println("Never stop!");
@@ -132,6 +155,7 @@ public class Main {
     }
 
     public static boolean haltingFunction3(int n) {
+        // Examples of different ways halting can be done in function or method
         if(System.currentTimeMillis() % (long) 2 == 0) { // HALT
             System.out.println("Nope! You stop!");
             return true;
@@ -144,6 +168,7 @@ public class Main {
     }
 
     public static boolean haltingFunction4(int n) {
+        // Examples of different ways halting can be done in function or method
         for (int i = 0; i < n; i++) {
             haltingFunction4(n);
         }
@@ -153,6 +178,14 @@ public class Main {
 
 
     public static void main(String[] args) {
+
+        int n = 10;
+        System.out.println("fibonacci(" + n + "):");
+        System.out.println(fibonacci(n));
+
+        System.out.println(fibonacciByLoop(n));
+
+
 
         haltingFunction(20);
         haltingFunction3(30);
@@ -166,11 +199,6 @@ public class Main {
 
         System.out.println("Total value of portfolio:");
         System.out.println(sumOfNestedSubsets(portfolio));
-
-        int n = 10;
-        System.out.println("fibonacci(" + n + "):");
-        System.out.println(fibonacci(n));
-        System.out.println(fibonacciByLoop(n));
 
         //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
         // to see how IntelliJ IDEA suggests fixing it.
