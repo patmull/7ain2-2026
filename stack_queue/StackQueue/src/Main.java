@@ -68,14 +68,14 @@ public class Main {
         Queue<Integer> queue = new LinkedList<>(); // NOTICE: Using LinkedList for the queue. Queue is abstract.
 
         // Enqueue elements into the queue
-        queue.add(1);
-        queue.add(2); // either add or throw exception ("error")
-        queue.offer(3); // ignored when queue full
+        System.out.println("Customer enters? " + queue.add(1));
+        System.out.println("Customer enters? " + queue.add(2)); // either add or throw exception ("error")
+        System.out.println("Customer enters? " + queue.offer(3)); // ignored when queue full
 
         // Dequeue elements from the queue
         System.out.println(queue);
         while (!queue.isEmpty()) {
-            System.out.println(queue.remove()); // either remove or throw exception ("error") when queue empty
+            System.out.println("Customer #" + queue.remove() + " is leaving..."); // either remove or throw exception ("error") when queue empty
             // System.out.println(queue.poll()); // returns null when queue empty
         }
         System.out.println(queue);

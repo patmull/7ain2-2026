@@ -102,6 +102,167 @@ public class Main {
         return merged;
     }
 
+    public static int[] mergeSortOptimizedDemo(int array[]) {
+        return mergeSortOptimized(array, 0, array.length - 1);
+    }
+
+    public static int[] mergeSortOptimized(int array[], int leftIndex, int rightIndex) {
+        if (leftIndex < rightIndex) {
+            // like in the case of bin. search, this is trick to avoid int overflows if rightIndex too big
+            int midIndex = leftIndex + (rightIndex - leftIndex) / 2;
+            array = mergeSortOptimized(array, leftIndex, midIndex);
+            array = mergeSortOptimized(array, midIndex + 1, rightIndex);
+            array = mergeTraditionally(array, leftIndex, midIndex, rightIndex);
+        }
+        return array;
+    }
+
+    public static int[] mergeTraditionally(int arr[], int l, int m, int r) {
+        // classic implementation of merge() method
+        int nLeft = m - l + 1; // boundary or left side
+        int nRight = r - m; // boundary for right side
+
+        int leftSplit[] = new int[nLeft];
+        int rightSplit[] = new int[nRight];
+
+        // copy left side
+        for (int i = 0; i < nLeft; ++i)
+            leftSplit[i] = arr[l + i];
+        // copy right side
+        for (int j = 0; j < nRight; ++j)
+            rightSplit[j] = arr[m + 1 + j];
+
+        int i = 0; int j = 0; // indexes for subarrays;
+        // i (again) for the left (sub-)array; j for the right
+        int k = l;
+        // index for the (partially) merged:
+        // tells where to copy the items from left and right to the original array
+
+        while (i < nLeft && j < nRight) {
+            // see the picture: https://www.w3schools.com/dsa/img_mergesort_long.png
+            // this decides the arrows in the green part when we merge
+            if(leftSplit[i] <= rightSplit[j]) {
+                arr[k] = leftSplit[i];
+                // copy from left split
+                i++;
+            } else {
+                arr[k] = rightSplit[j]; // copy from right split
+                j++;
+            }
+            k++;
+        }
+
+        while(i < nLeft) {
+            arr[k] = leftSplit[i]; // copy from left split
+            i++;
+            k++;
+        }
+
+        while(j < nRight) {
+            arr[k] = rightSplit[j];
+            j++;
+            k++;
+        }
+
+        return arr;
+    }
+
+    public static int[] swap(int[] arr, int i, int j) {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+        return arr;
+    }
+
+    public static int[] quickSortLomuto(int[] arr, int left, int right) {
+        if (left < right) {
+            // Find the locked pivot index
+            int pivotIndex = partitionLomuto(arr, left, right);
+
+            // Recursively sort the left bucket and right bucket
+            quickSortLomuto(arr, left, pivotIndex - 1);
+            quickSortLomuto(arr, pivotIndex + 1, right);
+        }
+        return arr;
+    }
+
+    public static int partitionHoare(int[] arr, int left, int right) {
+        int pivot = arr[left]; // Pick the first element as pivot
+        int i = left - 1;      // Start just outside the left bound
+        int j = right + 1;     // Start just outside the right bound
+
+        while (true) {
+            // find next element larger than pivot
+            // from the left
+            do {
+                i++;
+            } while (arr[i] < pivot);
+
+            // find next element smaller than pivot
+            // from the right
+            do {
+                j--;
+            } while (arr[j] > pivot);
+
+            // If the pointers meet/cross, STOP (otherwise we would get index errors)!
+            if (i >= j) {
+                return j;
+            }
+
+            // swap larger and smaller elements
+            swap(arr, i , j);
+        }
+   }
+
+    public static void quickSortHoareRecursive(int[] arr, int left, int right) {
+        if (left < right) {
+            // Find the dividing line (Notice Hoare doesn't lock the pivot!)
+            int dividingLine = partitionHoare(arr, left, right);
+
+            // Recursively sort the left and right sides
+            // IMPORTANT: Because Hoare doesn't lock the pivot in the middle,
+            // the left bucket INCLUDES the dividing line.
+            quickSortHoareRecursive(arr, left, dividingLine);
+            quickSortHoareRecursive(arr, dividingLine + 1, right);
+        }
+    }
+
+    public static int[] quickSort(int[] items, String schemeType) {
+        if (items.length == 0)
+            return items;
+        if (schemeType.equals("lomuto")) {
+            // Call the recursive function starting with the full bounds
+            quickSortLomuto(items, 0, items.length - 1);
+            return items;
+        } else if (schemeType.equals("hoare")) {
+            quickSortHoareRecursive(items, 0, items.length - 1);
+            return items;
+        } else {
+            System.out.println("Scheme not supported!");
+            int[] emptyArrayFallback = {};
+            return emptyArrayFallback;
+        }
+    }
+
+    public static int partitionLomuto(int[] arr, int left, int right) {
+        int pivot = arr[right];
+        int i = left - 1;
+
+        // i acts as boundary between smaller and
+        // larger element compared to pivot
+        for (int j = left; j < right; j++) {
+            // If smaller element is found expand the
+            // boundary and swapping it with boundary element.
+            if (arr[j] < pivot) {
+                i++;
+                swap(arr, i, j);
+            }
+        }
+        // place the pivot at its correct position
+        swap(arr, i+1, right);
+        return i+1;
+    }
+
     public static void main(String[] args) {
         // NOTICE: It is good to test various edge cases, e.g. already sorted, few items, etc...
         //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
@@ -123,11 +284,34 @@ public class Main {
         printArrayHelper(selectionSort(unsortedList3));
         printArrayHelper(selectionSort(unsortedList4));
          */
-
+        /*
         printArrayHelper(mergeSort(unsortedList));
         printArrayHelper(mergeSort(unsortedList2));
         printArrayHelper(mergeSort(unsortedList3));
         printArrayHelper(mergeSort(unsortedList4));
         printArrayHelper(mergeSort(unsortedList5));
+         */
+
+        /*
+        printArrayHelper(mergeSortOptimizedDemo(unsortedList));
+        printArrayHelper(mergeSortOptimizedDemo(unsortedList2));
+        printArrayHelper(mergeSortOptimizedDemo(unsortedList3));
+        printArrayHelper(mergeSortOptimizedDemo(unsortedList4));
+        printArrayHelper(mergeSortOptimizedDemo(unsortedList5));
+         */
+
+        /*
+        printArrayHelper(quickSort(unsortedList, "lomuto"));
+        printArrayHelper(quickSort(unsortedList2, "lomuto"));
+        printArrayHelper(quickSort(unsortedList3, "lomuto"));
+        printArrayHelper(quickSort(unsortedList4, "lomuto"));
+        printArrayHelper(quickSort(unsortedList5, "lomuto"));
+         */
+
+        printArrayHelper(quickSort(unsortedList, "hoare"));
+        printArrayHelper(quickSort(unsortedList2, "hoare"));
+        printArrayHelper(quickSort(unsortedList3, "hoare"));
+        printArrayHelper(quickSort(unsortedList4, "hoare"));
+        printArrayHelper(quickSort(unsortedList5, "hoare"));
     }
 }

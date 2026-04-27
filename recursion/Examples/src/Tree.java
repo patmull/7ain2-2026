@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Tree {
+    // This is example of tree implemented by self-referencing table with id, parent_id
 
     HashMap<Integer, Integer> treeTable = new HashMap<>();
 

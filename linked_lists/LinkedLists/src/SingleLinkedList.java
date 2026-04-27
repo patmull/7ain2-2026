@@ -70,7 +70,7 @@ public class SingleLinkedList {
                 System.out.println("WARNING: The position is out of range, not item was removed.");
                 break;
             }
-            nextNode = nextNode.getNext(); // continue traversing... and store the state of actual item
+            nextNode = nextNode.getNext(); // continue traversing... and store the state of the actual item
             i++;
         }
 
